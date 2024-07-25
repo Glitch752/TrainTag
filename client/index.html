@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Train Tag</title>
+  </head>
+  <body>
+    <div class="fullscreenContainer">
+      <button id="fullscreen" class="button">Enter fullscreen</button>
+
+      <div class="setting">
+        <label for="stereoscopic">Enable stereoscopic display</label>
+        <input type="checkbox" id="stereoscopic">
+      </div>
+      <div class="setting">
+        <label for="highResolution">High resolution (discard pixel ratio; might be laggy)</label>
+        <input type="checkbox" id="highResolution">
+      </div>
+      
+      <!-- <button id="resetDirection" class="button">Set this as forward</button> -->
+
+      <span>Note: You can always get back to this screen by exiting fullscreen!</span>
+    </div>
+    <div id="ui">
+      <div class="controls">
+        <canvas id="joystick"></canvas>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

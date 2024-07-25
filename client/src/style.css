@@ -1,0 +1,96 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#ui {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+canvas {
+  display: block;
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+
+.fullscreenContainer {
+  display: flex;
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreenContainer .button#fullscreen {
+  font-size: 35px;
+}
+.fullscreenContainer .button#resetDirection {
+  font-size: 20px;
+  background-color: #ddf5dc;
+  box-shadow: 0 0.2em #9cb7a2;
+}
+.fullscreenContainer .button#resetDirection:active {
+  background-color: #c6d3bd;
+  box-shadow: 0 0.1em #859c87;
+}
+.fullscreenContainer .button {
+  margin: 0.5em;
+
+  border: none;
+  outline: none;
+  border-radius: 0.5em;
+  padding: 0.2em 1em;
+
+  user-select: none;
+  
+  color: #111;
+  background-color: #f5f5dc;
+  box-shadow: 0 0.2em #b7b79c;
+  transform: translateY(0);
+
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.fullscreenContainer span {
+  color: white;
+  margin: 5px;
+  font-size: 20px;
+}
+.fullscreenContainer .button:active {
+  color: #000;
+  background-color: #d3d3bd;
+  box-shadow: 0 0.1em #9c9c85;
+  transform: translateY(0.1em);
+}
+
+.setting {
+  background-color: #f5e9dc;
+  box-shadow: 0 3px #b7aa9c;
+  border-radius: 10px;
+  padding: 0.2em 0.75em;
+  margin: 0.2em;
+  font-size: 20px;
+}
+.setting input {
+  margin-left: 10px;
+}
+
+.controls {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: white;
+}
