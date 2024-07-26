@@ -2,7 +2,11 @@ import * as THREE from "three";
 import { OBJLoader } from 'three/examples/jsm/Addons.js';
 import { MTLLoader } from 'three/examples/jsm/Addons.js';
 
-type TrainData = {
+export const CAR_LENGTH = 10;
+export const CAR_OFFSET = 4.5;
+export const CAR_WIDTH = 2;
+
+export type TrainData = {
     cars: TrainCar[]
 };
 
@@ -10,19 +14,21 @@ type TrainCar = {
     type: TrainCarType
 };
 
-enum TrainCarType {
+export enum TrainCarType {
     Seats,
     Rooms1,
-    Rooms2
+    Rooms2,
+    Empty
 };
 
 const carTypeNames = {
     [TrainCarType.Seats]: "seatCar",
     [TrainCarType.Rooms1]: "roomCar1",
     [TrainCarType.Rooms2]: "roomCar2",
+    [TrainCarType.Empty]: "emptyCar",
 };
 
-let trainData: TrainData = {
+export let trainData: TrainData = {
     cars: [
         { type: TrainCarType.Rooms1 },
         { type: TrainCarType.Seats },
@@ -37,20 +43,22 @@ export function loadCars(scene: THREE.Scene) {
   });
   trainCars = [];
 
-  const objLoader = new OBJLoader();
-  const mtlLoader = new MTLLoader();
-
   for(let i = 0; i < trainData.cars.length; i++) {
     const carData = trainData.cars[i];
     const carFileName = carTypeNames[carData.type];
 
+    const objLoader = new OBJLoader();
+    const mtlLoader = new MTLLoader();
     mtlLoader.load(`${carFileName}.mtl`, (materials) => {
         materials.preload();
+        Object.values(materials.materials).forEach(material => {
+            (material as THREE.MeshPhongMaterial).shininess = 0.5;
+        });
         
         objLoader.setMaterials(materials);
         objLoader.load(`${carFileName}.obj`, (object) => { 
-            object.position.x = i * 10 + 6.5;
-            object.position.y = -0.8;
+            object.position.x = i * CAR_LENGTH + CAR_OFFSET;
+            object.position.y = -0.5;
 
             trainCars.push(object);
             scene.add(object);

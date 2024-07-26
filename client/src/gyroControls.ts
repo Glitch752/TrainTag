@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { rotationUpdated } from "./movement";
 
 let screenOrientation = 0;
 let orientation = null;
@@ -32,26 +33,29 @@ function degToRad(deg: number): number {
   return deg / 180 * Math.PI;
 }
 
-const posZVector = new THREE.Vector3( 0, 0, 1 );
-const euler = new THREE.Euler();
+const posZVector = new THREE.Vector3(0, 0, 1);
+const tempEuler = new THREE.Euler();
 const tempQuaternion = new THREE.Quaternion();
 const offsetQuaternion = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); // -PI/2 around x-axis
 
 function setQuaternion(quaternion: THREE.Quaternion, alpha: number, beta: number, gamma: number, orient: number) {
-  euler.set(beta, alpha, -gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
-  
-  quaternion.setFromEuler(euler);
-  quaternion.multiply(offsetQuaternion);
-  quaternion.multiply(tempQuaternion.setFromAxisAngle(posZVector, -orient)); // Adjust for screen orientation
+    tempEuler.set(beta, alpha, -gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
+    
+    quaternion.setFromEuler(tempEuler);
+    quaternion.multiply(offsetQuaternion);
+    quaternion.multiply(tempQuaternion.setFromAxisAngle(posZVector, -orient)); // Adjust for screen orientation
+
+    tempEuler.setFromQuaternion(quaternion);
+    rotationUpdated(tempEuler.y, tempEuler.z);
 };
 
 function updateCamera(perspectiveCamera: THREE.PerspectiveCamera) {
-  const alpha  = orientation.alpha ? degToRad(orientation.alpha) : 0; // Z
-  const beta   = orientation.beta  ? degToRad(orientation.beta)  : 0; // X'
-  const gamma  = orientation.gamma ? degToRad(orientation.gamma) : 0; // Y''
-  const orient = screenOrientation ? degToRad(screenOrientation) : 0; // O
+    const alpha  = orientation.alpha ? degToRad(orientation.alpha) : 0; // Z
+    const beta   = orientation.beta  ? degToRad(orientation.beta)  : 0; // X'
+    const gamma  = orientation.gamma ? degToRad(orientation.gamma) : 0; // Y''
+    const orient = screenOrientation ? degToRad(screenOrientation) : 0; // O   | Roll, but contant screen rotation correction
 
-  setQuaternion(perspectiveCamera.quaternion, alpha, beta, gamma, orient);
+    setQuaternion(perspectiveCamera.quaternion, alpha, beta, gamma, orient);
 }
 
 declare global {
