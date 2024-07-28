@@ -91,9 +91,24 @@ Bun.serve({
                         id: client.id,
                         position: client.position
                     });
-                    // TODO: Check for tagging other players
                     // No anticheat! Have fun I guess?
                     break;
+                case "tagPlayer":
+                    // No anticheat! Have fun I guess?
+                    if(typeof parsedMessage.player !== "string") {
+                        console.log("Tag player validation error: Player isn't a string.");
+                        return;
+                    }
+                    const otherPlayer = clients.find(c => c.id === parsedMessage.player);
+                    if(!otherPlayer) {
+                        console.log("Tag player validation error: ID not found.");
+                        return;
+                    }
+
+                    otherPlayer.ws.send(JSON.stringify({
+                        type: "tagged"
+                    }));
+                    // TODO: Actual leaderboard/winning logic
             }
         },
         open(ws) {

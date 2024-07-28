@@ -26,6 +26,9 @@ ws.addEventListener("message", (e) => {
         case "playersUpdate":
             const clientIDs = parsedData.ids;
             updatePlayerList(clientIDs, getScene());
+            break;
+        case "tagged":
+            tagged();
     }
 });
 
@@ -37,4 +40,27 @@ export function send(value: any) {
     } else {
         ws.send(JSON.stringify(value));
     }
+}
+
+const tagTimer = 10; // seconds
+
+function tagged() {
+    const taggedElement = document.getElementById("tagged");
+    const respawnTimer = document.getElementById("respawnTimer");
+    respawnTimer.innerText = `You need to wait ${tagTimer} more seconds before continuing...`;
+
+    taggedElement.classList.add("visible");
+    let iterations = 0;
+    const interval = setInterval(() => {
+        respawnTimer.innerText = `You need to wait ${tagTimer - iterations} more seconds before continuing...`;
+
+        if(iterations > tagTimer) {
+            clearInterval(interval);
+
+            taggedElement.classList.remove("visible");
+
+            return;
+        }
+        iterations++;
+    }, 1000);
 }

@@ -99,3 +99,33 @@ canvas {
   pointer-events: all;
   touch-action: none;
 }
+
+#tagged {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease;
+}
+#tagged.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#tagged h1 {
+  font-size: 35px;
+  color: #dd8888;
+}
+#tagged span {
+  font-size: 20px;
+  color: white;
+}
